@@ -1,5 +1,8 @@
 /*
  This is the CSS style sheet for the responsive lab
+ it works by analyzing the screen size and then displaying 
+ the appropriate image. The image is all in one file and has been 
+ uploaded with the rest of the files. 
 */
 
 @media screen 
