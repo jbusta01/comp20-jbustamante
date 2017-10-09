@@ -2,10 +2,21 @@
 
 h3 {
 	font-family: Helvetica;
-	font-size: 14px;
+	font-size: 20px;
+	justify-content: center;
+	display: flex;
 }
 
 h1 {
-	font-size: 24px;
+	justify-content: center;
+	display: flex;
+	font-size: 54px;
 	font-family: Helvetica;
+}
+
+video {	
+	justify-content: center;
+	display: flex;
+	margin: auto;
+
 }

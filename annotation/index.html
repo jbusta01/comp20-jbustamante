@@ -20,18 +20,36 @@
 	var lyrics = document.getElementById("lyrics");
 
 	video.addEventListener("timeupdate", function(){ 
-			timer = video.currentTime;
-			if (video.currentTime > 9 && video.currentTime < 13) {
-				lyrics.innerHTML = "Children have You ever met the Bogeyman before";
+		timer = video.currentTime;
+		if (video.currentTime > 9 && video.currentTime < 13) {
+				lyrics.innerHTML = "<h3>Children have You ever met the Bogeyman before</h3>";
 			}
 
-			else if (video.currentTime > 13 && video.currentTime < 16) {
-				lyrics.innerHTML = "No, of course You haven't for You're much too good, I'm sure;";
+		else if (video.currentTime > 13 && video.currentTime < 16) {
+				lyrics.innerHTML = "<h3>No, of course You haven't for You're much too good, I'm sure;</h3>";
 			}
 
-			else if (video.currentTime > 17 && video.currentTime < 22) {
-			lyrics.innerHTML = "Don't You be afraid of him if he should visit You,";
+		else if (video.currentTime > 17 && video.currentTime < 22) {
+			lyrics.innerHTML = "<h3>Don't You be afraid of him if he should visit You,</h3>";
 		}
+
+		else if (video.currentTime > 22 && video.currentTime < 25) {
+			lyrics.innerHTML = "<h3>He's a great big coward, so I'll tell You what to do</h3>";
+		}
+
+		else if (video.currentTime > 26 && video.currentTime < 29) {
+			lyrics.innerHTML = "<h3>Hush, hush, hush, here comes the Bogeyman,</h3>";
+		}
+		else if (video.currentTime > 30 && video.currentTime < 33) {
+			lyrics.innerHTML = "<h3>Don't let him come too close to You, he'll catch you if he can.</h3>";
+		}
+		else if (video.currentTime > 33 && video.currentTime < 36) {
+			lyrics.innerHTML = "<h3>Just pretend that you're a crocodile</h3>";
+		}
+		else if (video.currentTime > 37 && video.currentTime < 41) {
+			lyrics.innerHTML = "<h3>And you will find that Bogeyman will run away a mile.</h3>";
+		}
+
 	}) 
 
 </script>
