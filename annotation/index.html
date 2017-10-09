@@ -13,18 +13,18 @@
 <video src="https://www.cs.tufts.edu/comp/20/classic.mp4" id="a_classic" controls></video>
 <div id="lyrics"></div>
 
-<script type = " text/javascript">
+<script type = "text/javascript">
 	// Complete this section and create a CSS file named style.css
 
-	var video = document.getElementById("video");
+	var video = document.getElementById("a_classic");
+	var lyrics = document.getElementById("lyrics");
+
 	video.addEventListener("timeupdate", function()) {
-		timer.innerHTML = vide.currentTime;
-			if (vide.currentTime < 4) {
-				caption.innerHTML = "<h3> Children have You ever met the Bogeyman before</h3>"
+	timer.innerHTML = video.currentTime;
+			if (video.currentTime < 4) {
+				lyrics.innerHTML = "<h3>lyrics</h3>";
 			}
 	}
-
-	
 
 </script>
 </body>
