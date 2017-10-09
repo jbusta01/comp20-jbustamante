@@ -19,13 +19,24 @@
 	var video = document.getElementById("a_classic");
 	var lyrics = document.getElementById("lyrics");
 
-	video.addEventListener("timeupdate", function()) {
-	timer.innerHTML = video.currentTime;
-			if (video.currentTime < 4) {
-				lyrics.innerHTML = "<h3>lyrics</h3>";
+	video.addEventListener("timeupdate", function(){ 
+			timer = video.currentTime;
+			if (video.currentTime > 9 && video.currentTime < 13) {
+				lyrics.innerHTML = "Children have You ever met the Bogeyman before";
 			}
-	}
+
+			else if (video.currentTime > 13 && video.currentTime < 16) {
+				lyrics.innerHTML = "No, of course You haven't for You're much too good, I'm sure;";
+			}
+
+			else if (video.currentTime > 17 && video.currentTime < 22) {
+			lyrics.innerHTML = "Don't You be afraid of him if he should visit You,";
+		}
+	}) 
 
 </script>
+
 </body>
+
+
 </html>
