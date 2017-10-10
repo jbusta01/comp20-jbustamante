@@ -12,6 +12,7 @@ h1 {
 	display: flex;
 	font-size: 54px;
 	font-family: Helvetica;
+	border-style: double;
 }
 
 video {	
