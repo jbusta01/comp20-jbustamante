@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Testing position</title>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<script>
+			Lat = 0;
+			Lng = 0;
+			var me = new google.maps.LatLng(Lat, Lng);
+
+			function getMyLocation() {
+				console.log("Hit Me One");
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function(position) {
+							Lat = position.coords.latitude;
+							Lng = position.coords.longitude;
+							elem = document.getElementById("info");
+							elem.innerHTML = "<h1>You are in " + Lat + ", " + Lng + "</h1>";
+						});
+				}
+				else {
+					alert("Geolocation is not supported by your web browser.  I'm Sorry!");
+				}
+
+				createMap();
+			}
+
+			function createMap()
+			{
+				var Settings  = {
+					zoom: 13, // The larger the zoom number, the bigger the zoom
+					center: me,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+
+				}
+				map = new google.maps.Map(document.getElementById("mapImage"), Settings);
+				myPosition = new google.maps.LatLng(Lat, Lng);
+				map.panTo(myPosition);
+
+				marker = new google.maps.Marker( {
+					position: me, 
+					title: "Current Location"
+				});
+				marker.setMap(map);
+			}
+
+		</script>
+
+
+
+	</head>
+	
+	<body onload= "getMyLocation()"">
+		<div id="info">
+			<h1>Getting your location...</h1>
+		</div>
+		<div id = "mapImage">
+		</div>
+	</body>
+</html>
