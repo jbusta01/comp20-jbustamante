@@ -2,46 +2,63 @@
 <html>
 	<head>
 		<title>Testing position</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<link rel="stylesheet" href="style.css"/>
 		<script>
-			Lat = 0;
-			Lng = 0;
-			var me = new google.maps.LatLng(Lat, Lng);
+			var myLat = -999999;
+			var myLng = -999999;
+			var me = new google.maps.LatLng(myLat, myLng);
+			var map;
+			var request = new XMLHttpRequest();
+			var infowindow = new google.maps.InfoWindow();
+			var Settings  = {
+				zoom: 13, // The larger the zoom number, the bigger the zoom
+				center: me,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+
+			};
 
 			function getMyLocation() {
-				console.log("Hit Me One");
+				map = new google.maps.Map(document.getElementById("mapImage"), Settings);
+				map.innerHTML = map;
 				if (navigator.geolocation) {
 					navigator.geolocation.getCurrentPosition(function(position) {
-							Lat = position.coords.latitude;
-							Lng = position.coords.longitude;
-							elem = document.getElementById("info");
-							elem.innerHTML = "<h1>You are in " + Lat + ", " + Lng + "</h1>";
+							myLat = position.coords.latitude;
+							myLng = position.coords.longitude;
+							console.log("You are in " + myLat + ", " + myLng);
+
+							if (myLat != -999999) {
+							createMap(myLat, myLng);			
+							}		
 						});
 				}
 				else {
 					alert("Geolocation is not supported by your web browser.  I'm Sorry!");
 				}
-
-				createMap();
 			}
-
-			function createMap()
+           
+			function createMap(lat, lng)
 			{
-				var Settings  = {
-					zoom: 13, // The larger the zoom number, the bigger the zoom
-					center: me,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
 
-				}
-				map = new google.maps.Map(document.getElementById("mapImage"), Settings);
-				myPosition = new google.maps.LatLng(Lat, Lng);
+				console.log("inside create map");
+				myPosition = new google.maps.LatLng(lat, lng);
+				console.log(myPosition);
+
+				console.log("You are in create map" + lat + ", " + lng);
+
 				map.panTo(myPosition);
 
 				marker = new google.maps.Marker( {
-					position: me, 
+					position: myPosition, 
 					title: "Current Location"
 				});
 				marker.setMap(map);
+
+				google.maps.event.addListener(marker, 'click', function() {
+				infowindow.setContent(marker.title);
+				infowindow.open(map, marker);
+				});
 			}
 
 		</script>
@@ -50,10 +67,7 @@
 
 	</head>
 	
-	<body onload= "getMyLocation()"">
-		<div id="info">
-			<h1>Getting your location...</h1>
-		</div>
+	<body onload= "getMyLocation()">
 		<div id = "mapImage">
 		</div>
 	</body>
