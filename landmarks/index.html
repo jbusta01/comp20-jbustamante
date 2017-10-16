@@ -28,7 +28,7 @@
 							myLng = position.coords.longitude;
 							console.log("You are in " + myLat + ", " + myLng);
 
-							if (myLat != -999999) {
+							if (myLat != -999999 && myLng != -999999) {
 							createMap(myLat, myLng);			
 							}		
 						});
@@ -59,7 +59,26 @@
 				infowindow.setContent(marker.title);
 				infowindow.open(map, marker);
 				});
+				if (myLat != -999999 && myLng != -999999) {
+					sendMyLocation();
+				}
 			}
+			
+			function sendMyLocation() {
+				console.log("Inside send my Location ");
+						request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true, "WfqPZVqm", );
+						request.onereadystatechange = function () {
+							if (request.onereadystatechange == 4 && request.status == 200) {
+								parsed = JSON.parsed();
+								console.log("Received info");
+							}
+						}
+						request.send(myLat, myLng);
+				
+			}
+			
+			
+
 
 		</script>
 
