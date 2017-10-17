@@ -69,14 +69,18 @@
 					console.log("Inside send my Location ");
 					var params = "login=WfqPZVqm&lat="+myLat+"&lng="+myLng;
 						request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
-			            request.setRequestHeader("login", "lat", "lng");
-						request.send(params);
+			            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+						
 
 						request.onreadystatechange = function () {
 							console.log("inside onreadystatechange");
 							rawData = request.resposeText;
 							console.log(rawData);
 						}
+
+						console.log( "parameters are: "+params);
+						console.log("request Status: " +request.status);
+						request.send(params);
 						
 						if (rawData!=null && request.status == 200) {
 								parsed = JSON.parsed(rawData);
@@ -90,7 +94,7 @@
 
 		</script>
 
-
+<!--  curl -d "login=WfqPZVqm&lat=42.4046496&lng=-71.1217446" -X POST https://defense-in-derpth.herokuapp.com/sendLocation  -->
 <!--  curl -d "login=WfqPZVqm&lat=42.4&lng=-71.01" -X POST https://defense-in-derpth.herokuapp.com/sendLocation  -->
 
 	</head>
