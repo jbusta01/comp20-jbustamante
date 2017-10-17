@@ -10,6 +10,31 @@
 			var myLng = -999999;
 			var me = new google.maps.LatLng(myLat, myLng);
 			var map;
+			var image = {
+				url: 'https://images.vexels.com/media/users/3/134640/isolated/lists/f2755703f8a93785225a13be336ad9c1-laugh-crying-emoji-emoticon.png',
+				size: new google.maps.Size(71, 71),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(17, 34),
+				scaledSize: new google.maps.Size(20, 20)
+			};
+
+			var place = {
+				url: 'https://cdn0.iconfinder.com/data/icons/travel-vacation/289/travel-transport-hotel-vacation-holidays-tourist-tourism-travelling-traveling_128-256.png',
+				size: new google.maps.Size(71, 71),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(17, 34),
+				scaledSize: new google.maps.Size(40, 40)
+			};
+
+
+			var host = {
+				url: 'http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/512/map-marker.png',
+				size: new google.maps.Size(71, 71),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(17, 34),
+				scaledSize: new google.maps.Size(50, 50)
+			};
+			
 			var parsed;
 			var rawData = null;
 			var request = new XMLHttpRequest();
@@ -57,7 +82,8 @@
 
 				marker = new google.maps.Marker( {
 					position: myPosition, 
-					title: "Current Location"
+					title: "Current Location",
+					icon: host
 				});
 				marker.setMap(map);
 
@@ -79,16 +105,25 @@
 						request.onreadystatechange = function () {
 							console.log("inside onreadystatechange");
 							console.log("ready stage: " + request.readyState);
-							if (request.readyState == 4) {
+							if (request.readyState == 4 && request.status == 200) {
 								rawData = request.responseText;
 								console.log("request Status: " +request.status);
 								parsed = JSON.parse(rawData);
 								console.log("Received info");
 								console.log(parsed);
+								
+								for (i = 0; i < parsed.people.length; i++) {
+									PeoplePosition = new google.maps.LatLng(parsed.people[i].lat, parsed.people[i].lng);
+									name = parsed.people[i].login;
+									setPeople(PeoplePosition, name);
+								}
 
-								setPoints();
+							
+								setLandmarks();
 
+								
 							}
+
 						}
 
 						console.log( "parameters are: "+params);
@@ -100,35 +135,46 @@
 			}
 			
 
-			function setPoints() {
-
-				var image = {
-				  url: 'https://images.vexels.com/media/users/3/134640/isolated/lists/f2755703f8a93785225a13be336ad9c1-laugh-crying-emoji-emoticon.png',
-				  size: new google.maps.Size(71, 71),
-				  origin: new google.maps.Point(0, 0),
-				  anchor: new google.maps.Point(17, 34),
-				  scaledSize: new google.maps.Size(25, 25)
-				};
-				console.log(parsed.people[1].login);
-				for (i = 0; i < parsed.people.length; i++) {
-					PeoplePosition = new google.maps.LatLng(parsed.people[i].lat, parsed.people[i].lng);
-					console.log(PeoplePosition);
-
-					them = new google.maps.Marker({
+			function setPeople(PeoplePosition, name) {
+				them = new google.maps.Marker({
 						position: PeoplePosition, 
-						title: parsed.people[i].login,
+						title: name,
 						icon: image
 					});
-					them.setMap(map);
-					google.maps.event.addListener(them, 'click', function() {
-					infowindow.setContent(them.title);
-					infowindow.open(map, them);
+				them.setMap(map);
+				var details = new google.maps.InfoWindow();
+				google.maps.event.addListener(them, 'click', function() {
+					infowindow.close();
+					details.setContent(them.title);
+					details.open(map, them);
+				});
+
+				console.log(name);
+			}
+
+			function setLandmarks() {
+
+				for (i = 0; i < parsed.landmarks.length; i++) {
+					landmarkPosition = new google.maps.LatLng(parsed.landmarks[i].geometry.coordinates[1], parsed.landmarks[i].geometry.coordinates[0])
+					landmarkName = parsed.landmarks[i].properties.Location_Name;
+
+					landmark = new google.maps.Marker({
+						position: landmarkPosition,
+						title: landmarkName,
+						icon: place,
 					});
+					landmark.setMap(map);
+
+					info = new google.maps.InfoWindow();
+					google.maps.event.addListener(landmark, 'click', function(){ 
+						info.setContent(landmarkName);
+						info.open(map, landmark);
+					});
+					console.log(parsed.landmarks[i].properties.Location_Name);
 				}
+
 			}
 			
-
-
 		</script>
 
 <!--  curl -d "login=WfqPZVqm&lat=42.4046496&lng=-71.1217446" -X POST https://defense-in-derpth.herokuapp.com/sendLocation  -->
