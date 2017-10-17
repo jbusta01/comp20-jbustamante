@@ -74,19 +74,22 @@
 
 						request.onreadystatechange = function () {
 							console.log("inside onreadystatechange");
+							console.log("ready stage: " + request.readyState);
+							if (request.readyState == 4) {
 							rawData = request.resposeText;
-							console.log(rawData);
+							console.log(request.resposeText);
+							console.log("request Status: " +request.status);
+							}
 						}
 
 						console.log( "parameters are: "+params);
-						console.log("request Status: " +request.status);
 						request.send(params);
 						
 						if (rawData!=null && request.status == 200) {
 								parsed = JSON.parsed(rawData);
 								console.log("Received info");
 							}
-				
+				console.log("request Status: " +request.status);
 			}
 			
 			
