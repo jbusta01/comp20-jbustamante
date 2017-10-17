@@ -20,6 +20,9 @@
 
 			};
 
+		function init() {
+			getMyLocation();
+		}
 			function getMyLocation() {
 				map = new google.maps.Map(document.getElementById("mapImage"), Settings);
 				map.innerHTML = map;
@@ -30,7 +33,8 @@
 							console.log("You are in " + myLat + ", " + myLng);
 
 							if (myLat != -999999 && myLng != -999999) {
-							createMap(myLat, myLng);			
+							createMap(myLat, myLng);
+							sendMyLocation();			
 							}		
 						});
 				}
@@ -60,9 +64,8 @@
 				infowindow.setContent(marker.title);
 				infowindow.open(map, marker);
 				});
-				if (myLat != -999999 && myLng != -999999) {
-					sendMyLocation();
-				}
+				
+				
 			}
 			
 			function sendMyLocation() {
@@ -76,9 +79,9 @@
 							console.log("inside onreadystatechange");
 							console.log("ready stage: " + request.readyState);
 							if (request.readyState == 4) {
-							rawData = request.resposeText;
-							console.log(request.resposeText);
-							console.log("request Status: " +request.status);
+								rawData = request.responseText;
+								console.log(request.responseText);
+								console.log("request Status: " +request.status);
 							}
 						}
 
@@ -102,7 +105,7 @@
 
 	</head>
 	
-	<body onload= "getMyLocation()">
+	<body onload= "init()">
 		<div id = "mapImage">
 		</div>
 	</body>
