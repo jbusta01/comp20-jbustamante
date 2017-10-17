@@ -10,6 +10,7 @@
 			var myLng = -999999;
 			var me = new google.maps.LatLng(myLat, myLng);
 			var map;
+			var parsed;
 			var rawData = null;
 			var request = new XMLHttpRequest();
 			var infowindow = new google.maps.InfoWindow();
@@ -80,21 +81,51 @@
 							console.log("ready stage: " + request.readyState);
 							if (request.readyState == 4) {
 								rawData = request.responseText;
-								console.log(request.responseText);
 								console.log("request Status: " +request.status);
+								parsed = JSON.parse(rawData);
+								console.log("Received info");
+								console.log(parsed);
+
+								setPoints();
+
 							}
 						}
 
 						console.log( "parameters are: "+params);
 						request.send(params);
-						
-						if (rawData!=null && request.status == 200) {
-								parsed = JSON.parsed(rawData);
-								console.log("Received info");
-							}
+					
 				console.log("request Status: " +request.status);
+
+				
 			}
 			
+
+			function setPoints() {
+
+				var image = {
+				  url: 'https://images.vexels.com/media/users/3/134640/isolated/lists/f2755703f8a93785225a13be336ad9c1-laugh-crying-emoji-emoticon.png',
+				  size: new google.maps.Size(71, 71),
+				  origin: new google.maps.Point(0, 0),
+				  anchor: new google.maps.Point(17, 34),
+				  scaledSize: new google.maps.Size(25, 25)
+				};
+				console.log(parsed.people[1].login);
+				for (i = 0; i < parsed.people.length; i++) {
+					PeoplePosition = new google.maps.LatLng(parsed.people[i].lat, parsed.people[i].lng);
+					console.log(PeoplePosition);
+
+					them = new google.maps.Marker({
+						position: PeoplePosition, 
+						title: parsed.people[i].login,
+						icon: image
+					});
+					them.setMap(map);
+					google.maps.event.addListener(them, 'click', function() {
+					infowindow.setContent(them.title);
+					infowindow.open(map, them);
+					});
+				}
+			}
 			
 
 
