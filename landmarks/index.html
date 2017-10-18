@@ -35,7 +35,7 @@
 				scaledSize: new google.maps.Size(50, 50)
 			};
 			
-			var parsed;
+			var parsed = null;;
 			var rawData = null;
 			var request = new XMLHttpRequest();
 			var infowindow = new google.maps.InfoWindow();
@@ -69,9 +69,10 @@
 				}
 			}
            
+
+
 			function createMap(lat, lng)
 			{
-
 				console.log("inside create map");
 				myPosition = new google.maps.LatLng(lat, lng);
 				console.log(myPosition);
@@ -88,13 +89,12 @@
 				marker.setMap(map);
 
 				google.maps.event.addListener(marker, 'click', function() {
-				infowindow.setContent(marker.title);
-				infowindow.open(map, marker);
-				});
-				
-				
+				infowindow.setContent(this.title);
+				infowindow.open(map, this);
+				});	
 			}
 			
+
 			function sendMyLocation() {
 					console.log("Inside send my Location ");
 					var params = "login=WfqPZVqm&lat="+myLat+"&lng="+myLng;
@@ -117,21 +117,12 @@
 									name = parsed.people[i].login;
 									setPeople(PeoplePosition, name);
 								}
-
-							
 								setLandmarks();
-
-								
 							}
-
 						}
-
 						console.log( "parameters are: "+params);
 						request.send(params);
-					
 				console.log("request Status: " +request.status);
-
-				
 			}
 			
 
@@ -145,12 +136,14 @@
 				var details = new google.maps.InfoWindow();
 				google.maps.event.addListener(them, 'click', function() {
 					infowindow.close();
-					details.setContent(them.title);
-					details.open(map, them);
+					details.setContent(this.title);
+					details.open(map, this);
 				});
-
 				console.log(name);
+				//console.log(calculateDistance(myPosition, PeoplePosition));
 			}
+
+
 
 			function setLandmarks() {
 
@@ -167,13 +160,17 @@
 
 					info = new google.maps.InfoWindow();
 					google.maps.event.addListener(landmark, 'click', function(){ 
-						info.setContent(landmarkName);
-						info.open(map, landmark);
+						info.setContent(this.title);
+						info.open(map, this);
 					});
 					console.log(parsed.landmarks[i].properties.Location_Name);
 				}
 
 			}
+
+			// function calculateDistance (p1, p2) {
+			// 	return (google.maps.geometry.spherical.computeDistanceBetween((p1, p2) / 1000).toFixed(2));
+			// }
 			
 		</script>
 
