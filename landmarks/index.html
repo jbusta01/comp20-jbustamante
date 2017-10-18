@@ -4,6 +4,7 @@
 		<title>Testing position</title>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+		<script type = "text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false"></script>
 		<link rel="stylesheet" href="style.css"/>
 		<script>
 			var myLat = -999999;
@@ -44,6 +45,11 @@
 				center: me,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 
+			};
+			closestLandmark = {
+				position: null,
+				distance: 0, 
+				name: null,
 			};
 
 		function init() {
@@ -130,13 +136,14 @@
 				them = new google.maps.Marker({
 						position: PeoplePosition, 
 						title: name,
-						icon: image
+						icon: image,
+						content: name + " Distance: " +calculateDistance(PeoplePosition, myPosition) +" miles"
 					});
 				them.setMap(map);
 				var details = new google.maps.InfoWindow();
 				google.maps.event.addListener(them, 'click', function() {
 					infowindow.close();
-					details.setContent(this.title);
+					details.setContent(this.content);
 					details.open(map, this);
 				});
 				console.log(name);
@@ -150,27 +157,41 @@
 				for (i = 0; i < parsed.landmarks.length; i++) {
 					landmarkPosition = new google.maps.LatLng(parsed.landmarks[i].geometry.coordinates[1], parsed.landmarks[i].geometry.coordinates[0])
 					landmarkName = parsed.landmarks[i].properties.Location_Name;
+					landDistance = calculateDistance(landmarkPosition, myPosition);
 
 					landmark = new google.maps.Marker({
 						position: landmarkPosition,
 						title: landmarkName,
 						icon: place,
+						content: landmarkName + " Distance: " +landDistance+" miles"
 					});
 					landmark.setMap(map);
 
 					info = new google.maps.InfoWindow();
 					google.maps.event.addListener(landmark, 'click', function(){ 
-						info.setContent(this.title);
+						info.setContent(this.content);
 						info.open(map, this);
 					});
-					console.log(parsed.landmarks[i].properties.Location_Name);
-				}
 
+					if (closestLandmark.distance == 0 || landDistance < closestLandmark.distance) {
+						closestLandmark.distance = landDistance;
+						closestLandmark.position = landmarkPosition;
+						closestLandmark.name = landmarkName;
+					}
+					console.log(parsed.landmarks[i].properties.Location_Name);
+					console.log("distance: " + calculateDistance(landmarkPosition, myPosition));
+				}
+				createLine();
 			}
 
-			// function calculateDistance (p1, p2) {
-			// 	return (google.maps.geometry.spherical.computeDistanceBetween((p1, p2) / 1000).toFixed(2));
-			// }
+			function calculateDistance (p1, p2) {
+				return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2).toFixed(2)/1600);
+			}
+
+			function createLine() {
+				console.log("closest: " + closestLandmark.name + "distance " + closestLandmark.distance);
+				
+			} 
 			
 		</script>
 
