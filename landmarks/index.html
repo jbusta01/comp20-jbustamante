@@ -62,7 +62,7 @@
 					navigator.geolocation.getCurrentPosition(function(position) {
 							myLat = position.coords.latitude;
 							myLng = position.coords.longitude;
-							console.log("You are in " + myLat + ", " + myLng);
+							//console.log("You are in " + myLat + ", " + myLng);
 
 							if (myLat != -999999 && myLng != -999999) {
 							createMap(myLat, myLng);
@@ -79,9 +79,9 @@
 
 			function createMap(lat, lng)
 			{
-				console.log("inside create map");
+				//console.log("inside create map");
 				myPosition = new google.maps.LatLng(lat, lng);
-				console.log(myPosition);
+				//console.log(myPosition);
 				marker = new google.maps.Marker( {
 					position: myPosition, 
 					title: "Current Location",
@@ -94,7 +94,7 @@
 				infowindow.setContent(this.content);
 				infowindow.open(map, this);
 				});	
-				console.log("You are in create map " + lat + ", " + lng);
+				//console.log("You are in create map " + lat + ", " + lng);
 
 				map.panTo(myPosition);
 
@@ -103,21 +103,21 @@
 			
 
 			function sendMyLocation() {
-					console.log("Inside send my Location ");
+					//console.log("Inside send my Location ");
 					var params = "login=WfqPZVqm&lat="+myLat+"&lng="+myLng;
 						request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
 			            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 						
 
 						request.onreadystatechange = function () {
-							console.log("inside onreadystatechange");
-							console.log("ready stage: " + request.readyState);
+							//console.log("inside onreadystatechange");
+							//console.log("ready stage: " + request.readyState);
 							if (request.readyState == 4 && request.status == 200) {
 								rawData = request.responseText;
-								console.log("request Status: " +request.status);
+								//console.log("request Status: " +request.status);
 								parsed = JSON.parse(rawData);
-								console.log("Received info");
-								console.log(parsed);
+								//console.log("Received info");
+								//console.log(parsed);
 								
 								for (i = 0; i < parsed.people.length; i++) {
 									PeoplePosition = new google.maps.LatLng(parsed.people[i].lat, parsed.people[i].lng);
@@ -127,9 +127,9 @@
 								setLandmarks();
 							}
 						}
-						console.log( "parameters are: "+params);
+						//console.log( "parameters are: "+params);
 						request.send(params);
-				console.log("request Status: " +request.status);
+				//console.log("request Status: " +request.status);
 			}
 			
 
@@ -147,7 +147,7 @@
 					details.setContent(this.content);
 					details.open(map, this);
 				});
-				console.log(name);
+				//console.log(name);
 				//console.log(calculateDistance(myPosition, PeoplePosition));
 			}
 
@@ -179,18 +179,29 @@
 						closestLandmark.position = landmarkPosition;
 						closestLandmark.name = landmarkName;
 					}
-					console.log(parsed.landmarks[i].properties.Location_Name);
-					console.log("distance: " + calculateDistance(landmarkPosition, myPosition));
+					//console.log(parsed.landmarks[i].properties.Location_Name);
+					//console.log("distance: " + calculateDistance(landmarkPosition, myPosition));
 				}
+				createLine();
+			}
 
 
-				marker.addListener('dblclick', function () {
+
+			function calculateDistance (p1, p2) {
+				var dis = google.maps.geometry.spherical.computeDistanceBetween(p1, p2)/1600;
+				var n = dis.toFixed(4);
+				return (n);
+			}
+
+
+			function createLine() {
+				marker.addListener('click', function () {
 					infowindow.close();
 					marker = new google.maps.Marker( {
 					position: myPosition, 
 					title: "Current Location",
 					icon: host,
-					content: "<p>" +"Current Position <br /> Closest Landmark: " + closestLandmark.name + "<br />Distance " + closestLandmark.distance + "miles </p>"
+					content: "<p>" +"Login: WfqPZVqm <br /> Current Position <br /> Closest Landmark: " + closestLandmark.name + "<br />Distance " + closestLandmark.distance + "miles </p>"
 				});
 				marker.setMap(map);
 
@@ -213,22 +224,11 @@
 			    flightPath.setMap(map);
 
 				});
-			//	createLine();
-			}
 
-			function calculateDistance (p1, p2) {
-				var dis = google.maps.geometry.spherical.computeDistanceBetween(p1, p2)/1600;
-				var n = dis.toFixed(4);
-				return (n);
-			}
-
-			function createLine() {
-				console.log("closest: " + closestLandmark.name + "distance " + closestLandmark.distance);
-				console.log(myPosition);
-				console.log(closestLandmark.position);
-				console.log(closestLandmark.position.lat());
-
-				
+				// console.log("closest: " + closestLandmark.name + "distance " + closestLandmark.distance);
+				// console.log(myPosition);
+				// console.log(closestLandmark.position);
+				// console.log(closestLandmark.position.lat());	
 			} 
 			
 		</script>
