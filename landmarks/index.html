@@ -82,22 +82,23 @@
 				console.log("inside create map");
 				myPosition = new google.maps.LatLng(lat, lng);
 				console.log(myPosition);
-
-				console.log("You are in create map " + lat + ", " + lng);
-
-				map.panTo(myPosition);
-
 				marker = new google.maps.Marker( {
 					position: myPosition, 
 					title: "Current Location",
-					icon: host
+					icon: host,
+					content: "Login: WfqPZVqm"
 				});
 				marker.setMap(map);
 
 				google.maps.event.addListener(marker, 'click', function() {
-				infowindow.setContent(this.title);
+				infowindow.setContent(this.content);
 				infowindow.open(map, this);
 				});	
+				console.log("You are in create map " + lat + ", " + lng);
+
+				map.panTo(myPosition);
+
+				
 			}
 			
 
@@ -137,7 +138,7 @@
 						position: PeoplePosition, 
 						title: name,
 						icon: image,
-						content: name + " Distance: " +calculateDistance(PeoplePosition, myPosition) +" miles"
+						content: "Login: " +name + "  Distance: " +calculateDistance(PeoplePosition, myPosition) +" miles"
 					});
 				them.setMap(map);
 				var details = new google.maps.InfoWindow();
@@ -163,7 +164,7 @@
 						position: landmarkPosition,
 						title: landmarkName,
 						icon: place,
-						content: landmarkName + " Distance: " +landDistance+" miles"
+						content: landmarkName + "  Distance: " +landDistance+" miles"
 					});
 					landmark.setMap(map);
 
@@ -181,15 +182,52 @@
 					console.log(parsed.landmarks[i].properties.Location_Name);
 					console.log("distance: " + calculateDistance(landmarkPosition, myPosition));
 				}
-				createLine();
+
+
+				marker.addListener('dblclick', function () {
+					infowindow.close();
+					marker = new google.maps.Marker( {
+					position: myPosition, 
+					title: "Current Location",
+					icon: host,
+					content: "<p>" +"Current Position <br /> Closest Landmark: " + closestLandmark.name + "<br />Distance " + closestLandmark.distance + "miles </p>"
+				});
+				marker.setMap(map);
+
+				google.maps.event.addListener(marker, 'click', function() {
+				infowindow.setContent(this.content);
+				infowindow.open(map, this);
+				});	
+
+				 var PlanCoordinates = [
+          			{lat: myLat, lng: myLng},
+          			{lat: closestLandmark.position.lat(), lng: closestLandmark.position.lng()},
+        			];
+			    var flightPath = new google.maps.Polyline({
+			      path: PlanCoordinates,
+			      geodesic: true,
+			      strokeColor: '#006eff',
+			      strokeOpacity: 1.0,
+			      strokeWeight: 4
+			    });
+			    flightPath.setMap(map);
+
+				});
+			//	createLine();
 			}
 
 			function calculateDistance (p1, p2) {
-				return (google.maps.geometry.spherical.computeDistanceBetween(p1, p2).toFixed(2)/1600);
+				var dis = google.maps.geometry.spherical.computeDistanceBetween(p1, p2)/1600;
+				var n = dis.toFixed(4);
+				return (n);
 			}
 
 			function createLine() {
 				console.log("closest: " + closestLandmark.name + "distance " + closestLandmark.distance);
+				console.log(myPosition);
+				console.log(closestLandmark.position);
+				console.log(closestLandmark.position.lat());
+
 				
 			} 
 			
