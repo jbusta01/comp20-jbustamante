@@ -11,6 +11,7 @@
 			var myLng = -999999;
 			var me = new google.maps.LatLng(myLat, myLng);
 			var map;
+			var id= "WfqPZVqm";
 			var image = {
 				url: 'https://images.vexels.com/media/users/3/134640/isolated/lists/f2755703f8a93785225a13be336ad9c1-laugh-crying-emoji-emoticon.png',
 				size: new google.maps.Size(71, 71),
@@ -41,7 +42,7 @@
 			var request = new XMLHttpRequest();
 			var infowindow = new google.maps.InfoWindow();
 			var Settings  = {
-				zoom: 13, // The larger the zoom number, the bigger the zoom
+				zoom: 14, // The larger the zoom number, the bigger the zoom
 				center: me,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 
@@ -79,46 +80,33 @@
 
 			function createMap(lat, lng)
 			{
-				//console.log("inside create map");
 				myPosition = new google.maps.LatLng(lat, lng);
-				//console.log(myPosition);
+				infowindow.setContent("<p>"+"Current Location </ br> "+"Login: " + id +"</p>");
 				marker = new google.maps.Marker( {
 					position: myPosition, 
 					title: "Current Location",
-					icon: host,
-					content: "<p>"+"Current Location </ br> "+"Login: WfqPZVqm</p>"
+					icon: host
 				});
 				marker.setMap(map);
-
-				//google.maps.event.addListener(marker, 'click', function() {
-					//infowindow.close();
-					infowindow.setContent(marker.content);
-					infowindow.open(map, marker);
-				//});	
-				//console.log("You are in create map " + lat + ", " + lng);
+	
+				infowindow.open(map, marker);
 
 				map.panTo(myPosition);
 
-				
 			}
 			
 
 			function sendMyLocation() {
-					//console.log("Inside send my Location ");
 					var params = "login=WfqPZVqm&lat="+myLat+"&lng="+myLng;
 						request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
 			            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 						
 
 						request.onreadystatechange = function () {
-							//console.log("inside onreadystatechange");
-							//console.log("ready stage: " + request.readyState);
+
 							if (request.readyState == 4 && request.status == 200) {
 								rawData = request.responseText;
-								//console.log("request Status: " +request.status);
 								parsed = JSON.parse(rawData);
-								//console.log("Received info");
-								//console.log(parsed);
 								
 								for (i = 0; i < parsed.people.length; i++) {
 									PeoplePosition = new google.maps.LatLng(parsed.people[i].lat, parsed.people[i].lng);
@@ -128,9 +116,7 @@
 								setLandmarks();
 							}
 						}
-						//console.log( "parameters are: "+params);
 						request.send(params);
-				//console.log("request Status: " +request.status);
 			}
 			
 
@@ -142,14 +128,12 @@
 						content: "Login: " +name + "  Distance: " +calculateDistance(PeoplePosition, myPosition) +" miles"
 					});
 				them.setMap(map);
-				var details = new google.maps.InfoWindow();
+				details = new google.maps.InfoWindow();
 				google.maps.event.addListener(them, 'click', function() {
-					infowindow.close();
+				
 					details.setContent(this.content);
 					details.open(map, this);
 				});
-				//console.log(name);
-				//console.log(calculateDistance(myPosition, PeoplePosition));
 			}
 
 
@@ -180,8 +164,6 @@
 						closestLandmark.position = landmarkPosition;
 						closestLandmark.name = landmarkName;
 					}
-					//console.log(parsed.landmarks[i].properties.Location_Name);
-					//console.log("distance: " + calculateDistance(landmarkPosition, myPosition));
 				}
 				createLine();
 			}
@@ -215,11 +197,6 @@
 			    flightPath.setMap(map);
 
 				});
-
-				// console.log("closest: " + closestLandmark.name + "distance " + closestLandmark.distance);
-				// console.log(myPosition);
-				// console.log(closestLandmark.position);
-				// console.log(closestLandmark.position.lat());	
 			} 
 			
 		</script>
