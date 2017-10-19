@@ -19,7 +19,6 @@
 				anchor: new google.maps.Point(17, 34),
 				scaledSize: new google.maps.Size(25, 25)
 			};
-
 			var place = {
 				url: 'https://cdn0.iconfinder.com/data/icons/travel-vacation/289/travel-transport-hotel-vacation-holidays-tourist-tourism-travelling-traveling_128-256.png',
 				size: new google.maps.Size(71, 71),
@@ -27,8 +26,6 @@
 				anchor: new google.maps.Point(17, 34),
 				scaledSize: new google.maps.Size(40, 40)
 			};
-
-
 			var host = {
 				url: 'https://cdn0.iconfinder.com/data/icons/maps-locations-7/24/map_location_street_view-512.png',
 				size: new google.maps.Size(71, 71),
@@ -36,7 +33,6 @@
 				anchor: new google.maps.Point(34, 40),
 				scaledSize: new google.maps.Size(60, 60)
 			};
-			
 			var parsed = null;;
 			var rawData = null;
 			var request = new XMLHttpRequest();
@@ -95,7 +91,6 @@
 
 			}
 			
-
 			function sendMyLocation() {
 					var params = "login=WfqPZVqm&lat="+myLat+"&lng="+myLng;
 						request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
@@ -149,9 +144,10 @@
 						position: landmarkPosition,
 						title: landmarkName,
 						icon: place,
-						content: "<h4>" + landmarkName+ "</h4>" + "  Distance: " +landDistance+" miles"
+						content: "<h4>" + landmarkName+ "</h4>" + "<h5>Distance: " +landDistance+" miles</h5>" + parsed.landmarks[i].properties.Details,
 					});
 					landmark.setMap(map);
+					console.log(parsed.landmarks);
 
 					info = new google.maps.InfoWindow();
 					google.maps.event.addListener(landmark, 'click', function(){ 
@@ -200,10 +196,6 @@
 			} 
 			
 		</script>
-
-<!--  curl -d "login=WfqPZVqm&lat=42.4046496&lng=-71.1217446" -X POST https://defense-in-derpth.herokuapp.com/sendLocation  -->
-<!--  curl -d "login=WfqPZVqm&lat=42.4&lng=-71.01" -X POST https://defense-in-derpth.herokuapp.com/sendLocation  -->
-
 	</head>
 	
 	<body onload= "init()">
@@ -211,3 +203,6 @@
 		</div>
 	</body>
 </html>
+
+<!--  curl -d "login=WfqPZVqm&lat=42.4046496&lng=-71.1217446" -X POST https://defense-in-derpth.herokuapp.com/sendLocation  -->
+<!--  curl -d "login=WfqPZVqm&lat=42.4&lng=-71.01" -X POST https://defense-in-derpth.herokuapp.com/sendLocation  -->
