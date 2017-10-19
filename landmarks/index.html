@@ -147,7 +147,6 @@
 						content: "<h4>" + landmarkName+ "</h4>" + "<h5>Distance: " +landDistance+" miles</h5>" + parsed.landmarks[i].properties.Details,
 					});
 					landmark.setMap(map);
-					console.log(parsed.landmarks);
 
 					info = new google.maps.InfoWindow();
 					google.maps.event.addListener(landmark, 'click', function(){ 
