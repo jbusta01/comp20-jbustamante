@@ -81,7 +81,7 @@
 			function createMap(lat, lng)
 			{
 				myPosition = new google.maps.LatLng(lat, lng);
-				infowindow.setContent("<p>"+"Current Location </ br> "+"Login: " + id +"</p>");
+				infowindow.setContent("<h4>" + " Current Location </h4> "+"Login: " + id +"</p>");
 				marker = new google.maps.Marker( {
 					position: myPosition, 
 					title: "Current Location",
@@ -125,7 +125,7 @@
 						position: PeoplePosition, 
 						title: name,
 						icon: image,
-						content: "Login: " +name + "  Distance: " +calculateDistance(PeoplePosition, myPosition) +" miles"
+						content: "<h4>Login: "+name+"</h4>Distance: " +calculateDistance(PeoplePosition, myPosition) +" miles"
 					});
 				them.setMap(map);
 				details = new google.maps.InfoWindow();
@@ -149,7 +149,7 @@
 						position: landmarkPosition,
 						title: landmarkName,
 						icon: place,
-						content: landmarkName + "  Distance: " +landDistance+" miles"
+						content: "<h4>" + landmarkName+ "</h4>" + "  Distance: " +landDistance+" miles"
 					});
 					landmark.setMap(map);
 
@@ -180,7 +180,7 @@
 			function createLine() {
 				marker.addListener('click', function () {
 			
-				infowindow.setContent("<p>" +"Login: WfqPZVqm <br /> Current Position <br /> Closest Landmark: " + closestLandmark.name + "<br />Distance " + closestLandmark.distance + "miles </p>");
+				infowindow.setContent("<h4>" + " Current Location </h4> "+"<p>" +"Login: WfqPZVqm <br />  Closest Landmark: " + closestLandmark.name + "<br />Distance " + closestLandmark.distance + "miles </p>");
 				infowindow.open(map, this);
 
 				 var PlanCoordinates = [
