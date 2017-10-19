@@ -16,7 +16,7 @@
 				size: new google.maps.Size(71, 71),
 				origin: new google.maps.Point(0, 0),
 				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(20, 20)
+				scaledSize: new google.maps.Size(25, 25)
 			};
 
 			var place = {
@@ -29,11 +29,11 @@
 
 
 			var host = {
-				url: 'http://iconshow.me/media/images/Mixed/small-n-flat-icon/png/512/map-marker.png',
+				url: 'https://cdn0.iconfinder.com/data/icons/maps-locations-7/24/map_location_street_view-512.png',
 				size: new google.maps.Size(71, 71),
 				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(50, 50)
+				anchor: new google.maps.Point(34, 40),
+				scaledSize: new google.maps.Size(60, 60)
 			};
 			
 			var parsed = null;;
@@ -86,14 +86,15 @@
 					position: myPosition, 
 					title: "Current Location",
 					icon: host,
-					content: "Login: WfqPZVqm"
+					content: "<p>"+"Current Location </ br> "+"Login: WfqPZVqm</p>"
 				});
 				marker.setMap(map);
 
-				google.maps.event.addListener(marker, 'click', function() {
-				infowindow.setContent(this.content);
-				infowindow.open(map, this);
-				});	
+				//google.maps.event.addListener(marker, 'click', function() {
+					//infowindow.close();
+					infowindow.setContent(marker.content);
+					infowindow.open(map, marker);
+				//});	
 				//console.log("You are in create map " + lat + ", " + lng);
 
 				map.panTo(myPosition);
@@ -196,19 +197,9 @@
 
 			function createLine() {
 				marker.addListener('click', function () {
-					infowindow.close();
-					marker = new google.maps.Marker( {
-					position: myPosition, 
-					title: "Current Location",
-					icon: host,
-					content: "<p>" +"Login: WfqPZVqm <br /> Current Position <br /> Closest Landmark: " + closestLandmark.name + "<br />Distance " + closestLandmark.distance + "miles </p>"
-				});
-				marker.setMap(map);
-
-				google.maps.event.addListener(marker, 'click', function() {
-				infowindow.setContent(this.content);
+			
+				infowindow.setContent("<p>" +"Login: WfqPZVqm <br /> Current Position <br /> Closest Landmark: " + closestLandmark.name + "<br />Distance " + closestLandmark.distance + "miles </p>");
 				infowindow.open(map, this);
-				});	
 
 				 var PlanCoordinates = [
           			{lat: myLat, lng: myLng},
