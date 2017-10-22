@@ -12,9 +12,13 @@
         $(document).ready(function (){
             console.log(msg)
             $('#msg').change(function () { 
+                date = new Date();
                  message = $("input:text").val(); 
                  console.log(message);
-                $("div").append(message)});  
+                 console.log(date);
+                $("div").after("<p>"+date + ": " +message+"</p>")
+                this.value = '';});  
+
         });
         
     </script>
