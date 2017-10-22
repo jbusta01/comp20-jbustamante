@@ -9,20 +9,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         // Your work will be done here...
-        myStorage = window.localStorage;
         var store = new Array(); 
         var i = 0;
+
         $(document).ready(function (){  
             console.log(localStorage);
             if (localStorage != null) {
-            yo = JSON.parse(localStorage.getItem("savedData"));
-            console.log(yo);
-        }
-            for (i=0; i <= yo.length; i++) {
-                 $("div").after(yo[i]);
-                store[i] = yo[i];
-            } 
-            console.log(msg)
+                yo = JSON.parse(localStorage.getItem("savedData"));
+                console.log(yo);
+                if (yo!=null) {
+                    for (i=0; i <= yo.length; i++) {
+                     $("div").after(yo[i]);
+                    store[i] = yo[i];
+                    } 
+                }
+            }
+
             $('#msg').change(function () { 
                 date = new Date();
                  message = $("input:text").val(); 
