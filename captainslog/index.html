@@ -18,12 +18,10 @@
             yo = JSON.parse(localStorage.getItem("savedData"));
             console.log(yo);
         }
-        for (i=0; i <= yo.length; i++) {
-       $("div").after(yo[i]);
-       store[i] = yo[i];
-       i++;
-   }
-            
+            for (i=0; i <= yo.length; i++) {
+                 $("div").after(yo[i]);
+                store[i] = yo[i];
+            } 
             console.log(msg)
             $('#msg').change(function () { 
                 date = new Date();
@@ -32,7 +30,9 @@
                  console.log(date);
                  display = "<p>"+date + " - " +message+"</p>"
                 $("div").after(display)
+
                store[i] = display;
+               console.log(store[i]);
                i++
                 this.value = '';});  
             
